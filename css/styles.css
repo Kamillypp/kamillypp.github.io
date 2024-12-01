@@ -1,0 +1,161 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Container dos produtos */
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Exibe 3 produtos por linha no desktop */
+    gap: 20px;
+    padding: 20px;
+    justify-items: center; /* Centraliza os produtos */
+}
+
+/* Estilo dos produtos */
+.produto {
+    background-color: #f9f9f9;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Para poder posicionar os botões abaixo */
+    width: 100%; /* Ocupa toda a largura disponível */
+    max-width: 280px; /* Limita o tamanho máximo do produto */
+}
+
+.produto img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.produto h3 {
+    font-size: 16px;
+    margin: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.produto p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px; /* Espaçamento antes dos botões */
+}
+
+/* Estilos dos botões */
+.adicionar, .ver-mais {
+    display: block;
+    width: 100%; /* Faz o botão ocupar a linha inteira */
+    padding: 12px 0;
+    margin-top: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.adicionar {
+    background-color: #28a745;
+    color: white;
+}
+
+.adicionar:hover {
+    background-color: #218838;
+}
+
+.ver-mais {
+    background-color: #007bff;
+    color: white;
+    margin-top: 5px;
+}
+
+.ver-mais:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos do Carrinho */
+.carrinho {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#listaCarrinho {
+    list-style-type: none;
+    padding: 0;
+}
+
+#listaCarrinho li {
+    margin-bottom: 10px;
+}
+
+#total {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto 0;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 600px) {
+    .produtos {
+        grid-template-columns: 1fr; /* Exibe 1 produto por linha em telas pequenas */
+    }
+    
+    .produto {
+        max-width: 100%; /* Permite que o produto ocupe toda a largura disponível */
+        margin-bottom: 20px; /* Espaçamento adicional entre os produtos */
+    }
+
+    .produto h3 {
+        font-size: 14px;
+    }
+
+    .produto p {
+        font-size: 12px;
+    }
+
+    .adicionar, .ver-mais {
+        font-size: 12px;
+        padding: 10px 0;
+    }
+}

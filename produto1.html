@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Detalhes do Produto</h1>
+    </header>
+
+    <section class="detalhes-produto">
+        <img src="https://via.placeholder.com/300" alt="Produto Longo Exemplo 1">
+        <h3>Produto Longo Exemplo 1</h3>
+        <p>Descrição completa do produto. Este produto oferece excelentes benefícios e qualidade. Confira todos os detalhes sobre seu uso, funcionalidades e materiais. Ideal para quem deseja...</p>
+        <p>Preço: R$ 99,90</p>
+        
+        <!-- Seção do Carrinho -->
+        <section class="carrinho">
+            <h2>Produtos no Carrinho</h2>
+            <ul id="listaCarrinhoDetalhes"></ul>
+            <p id="totalCarrinho"></p>
+        </section>
+
+        <div class="navegacao">
+            <button onclick="window.history.back()">← Voltar</button>
+            <!-- Removido o botão de "Finalizar Compra" -->
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Loja Online</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Função para atualizar o carrinho na página de detalhes
+        function atualizarCarrinhoDetalhes() {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            const listaCarrinho = document.getElementById('listaCarrinhoDetalhes');
+            const totalCarrinho = document.getElementById('totalCarrinho');
+            let valorTotal = 0;
+
+            // Limpar a lista atual
+            listaCarrinho.innerHTML = '';
+
+            // Adicionar itens do carrinho na página
+            carrinho.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)} (Código: ${item.codigo})`;
+                listaCarrinho.appendChild(li);
+                valorTotal += item.preco;
+            });
+
+            // Mostrar o total no carrinho
+            totalCarrinho.textContent = `Total no Carrinho: R$ ${valorTotal.toFixed(2)}`;
+        }
+
+        // Atualizar o carrinho na página de detalhes ao carregar
+        document.addEventListener('DOMContentLoaded', atualizarCarrinhoDetalhes);
+    </script>
+</body>
+</html>

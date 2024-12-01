@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Catálogo de Produtos</h1>
+    </header>
+
+    </nav>
+
+    <section class="produtos">
+        <div class="produto">
+            <img src="https://via.placeholder.com/100" alt="Produto 1">
+            <h3 class="produto-nome">Produto Longo Exemplo 1</h3>
+            <p>R$ 99,90</p>
+            <button class="adicionar" onclick="adicionarAoCarrinho('Produto Longo Exemplo 1', 99.90)">Adicionar ao Carrinho</button>
+            <button class="ver-mais" onclick="window.location.href='produto1.html'">Ver Mais</button>
+        </div>
+        <div class="produto">
+            <img src="https://via.placeholder.com/100" alt="Produto 2">
+            <h3 class="produto-nome">Produto Longo Exemplo 2</h3>
+            <p>R$ 149,90</p>
+            <button class="adicionar" onclick="adicionarAoCarrinho('Produto Longo Exemplo 2', 149.90)">Adicionar ao Carrinho</button>
+            <button class="ver-mais" onclick="window.location.href='produto2.html'">Ver Mais</button>
+        </div>
+        <div class="produto">
+            <img src="https://via.placeholder.com/100" alt="Produto 3">
+            <h3 class="produto-nome">Produto Longo Exemplo 3</h3>
+            <p>R$ 199,90</p>
+            <button class="adicionar" onclick="adicionarAoCarrinho('Produto Longo Exemplo 3', 199.90)">Adicionar ao Carrinho</button>
+            <button class="ver-mais" onclick="window.location.href='produto3.html'">Ver Mais</button>
+        </div>
+    </section>
+
+    <section class="carrinho">
+        <h2>Carrinho de Compras</h2>
+        <ul id="listaCarrinho"></ul>
+        <p id="total"></p>
+        <button onclick="finalizarCompra()">Finalizar Compra</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Loja Online</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
