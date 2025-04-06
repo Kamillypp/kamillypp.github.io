@@ -1,0 +1,440 @@
+<!DOCTYPE html>  
+<html lang="pt-BR">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Quiz de Segurança do Trabalho</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: #f4f4f4;  
+            margin: 0;  
+            padding: 0;  
+            height: 100vh;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+        }  
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .question {  
+            margin: 20px 0;  
+            font-size: 1.2em;  
+        }  
+
+        .option {  
+            display: block;  
+            margin: 5px 0;  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+            cursor: pointer;  
+            transition: background 0.3s;  
+        }  
+
+        .option:hover {  
+            background: #e0e0e0;  
+        }  
+
+        .correct {  
+            background: #c8e6c9;  
+            color: #2e7d32;  
+        }  
+
+        .wrong {  
+            background: #ffcdd2;  
+            color: #c62828;  
+        }  
+
+        button {  
+            margin-top: 20px;  
+            padding: 10px 15px;  
+            font-size: 1em;  
+            cursor: pointer;  
+        }  
+
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+    </style>  
+</head>  
+<body>  
+    <div class="container">
+        <h1>Quiz sobre Segurança do Trabalho</h1>  
+        <h2 class="subtitle">By Kamilly Vitória</h2>
+        <h3>Teste seus conhecimentos sobre normas e prevenção de acidentes</h3>
+        <div id="quizContainer"></div>  
+        <button onclick="nextQuestion()">Próxima Pergunta</button>  
+    </div>  
+    <script>  
+        const questions = [  
+    { question: "Qual é a função de um laudo técnico de segurança do trabalho?", options: ["Aumentar a produtividade", "Indicar a necessidade de EPIs", "Identificar as condições de risco", "Gerar custos para a empresa"], answer: 2 },  
+    { question: "Qual é a principal legislação de segurança do trabalho no Brasil?", options: ["CLT", "NR 1", "Constituição Federal", "Normas da ANVISA"], answer: 1 },  
+    { question: "O que deve ser feito em caso de incêndio?", options: ["Continuar trabalhando normalmente", "Utilizar água para apagar", "Evacuar o local e chamar os bombeiros", "Aguardar as instruções do supervisor"], answer: 2 },  
+    { question: "Qual o objetivo da CIPA?", options: ["Aumentar a produção", "Gerenciar a equipe", "Prevenir acidentes e doenças", "Reduzir custos"], answer: 2 },  
+    { question: "O que caracteriza a taxa de frequência de acidentes de trabalho?", options: ["Número de mortes por acidente", "Número de acidentes com afastamento", "Número total de acidentes", "Taxa de doenças ocupacionais"], answer: 1 },  
+    { question: "Como é calculada a taxa de gravidade de acidentes?", options: ["Horas perdidas por acidente dividido por número de empregados", "Dias perdidos por acidentes com afastamento de um ano", "Número total de acidentes dividido por horas trabalhadas", "Total de mortes em acidentes de trabalho"], answer: 1 },  
+    { question: "Qual a importância dos EPIs na NR 14280?", options: ["Eliminação de todos os riscos", "Redução da exposição a riscos", "Aumento da produtividade", "Redução de custos operacionais"], answer: 1 },  
+    { question: "Quem pode ser designado como responsável pela segurança do trabalho em uma empresa?", options: ["Qualquer funcionário", "Somente engenheiros", "Técnicos em segurança do trabalho", "Somente diretores"], answer: 2 },  
+    { question: "Qual a periodicidade ideal para revisão dos procedimentos de segurança?", options: ["Uma vez por ano", "Somente quando ocorrer um acidente", "Semestralmente", "Sempre que uma nova norma for publicada"], answer: 0 },  
+    { question: "O que deve constar no Programa de Prevenção de Riscos Ambientais (PPRA)?", options: ["Mapeamento de riscos", "Cronograma de treinamentos", "Lista de EPIs disponíveis", "Todas as alternativas acima"], answer: 3 },  
+    { question: "A NR 14280 é aplicável a que tipo de trabalho?", options: ["Trabalho em escritório", "Trabalho em ambientes externos", "Todos os tipos de trabalho", "Somente a indústrias"], answer: 2 },  
+    { question: "Qual o papel do técnico em segurança do trabalho?", options: ["Realizar atividades operacionais apenas", "Atuar na prevenção de acidentes e doenças", "Supervisionar todos os setores da empresa", "Reduzir custos com mão de obra"], answer: 1 },  
+    { question: "Qual a frequência mínima recomendada para treinamentos de segurança?", options: ["Mensal", "Anual", "Semestral", "Trimestral"], answer: 3 },  
+    { question: "Qual é um dos principais objetivos da NR 14280 na prevenção de riscos?", options: ["Promover a competição entre os funcionários", "Reduzir custos operacionais", "Garantir um ambiente de trabalho seguro", "Aumentar a carga horária"], answer: 2 },  
+    { question: "Quais são os principais riscos abordados pela NR 14280?", options: ["Riscos químicos", "Riscos físicos", "Riscos ergonométricos", "Todos os acima"], answer: 3 },  
+    { question: "Qual é a autoridade responsável pela fiscalização do cumprimento das NRs?", options: ["Ministério da Saúde", "Ministério do Trabalho", "CIPA", "Sindicato"], answer: 1 },  
+    { question: "O que deve ser feito após a identificação de um risco no ambiente de trabalho?", options: ["Ignorar se não ocorreu acidente", "Implementar medidas de controle", "Esperar novas orientações", "Reunir a equipe para discussão"], answer: 1 },  
+    { question: "Qual a importância do treinamento em segurança do trabalho?", options: ["Evitar a aplicação de EPIs", "Familiarizar os trabalhadores com os riscos", "Reduzir o tempo de trabalho", "Aumentar a carga de trabalho"], answer: 1 },  
+    { question: "Qual é o objetivo da análise de acidentes de trabalho?", options: ["Identificar culpados", "Implementar melhorias para evitar recorrência", "Informar o cliente sobre problemas", "Reduzir custos"], answer: 1 },  
+    { question: "O que deve ser incluído na sinalização de segurança?", options: ["Apenas o nome da empresa", "Informações sobre acidentes anteriores", "Advertências e instruções de segurança", "Somente imagens"], answer: 2 },  
+    { question: "Qual é a função do responsável técnico em segurança do trabalho?", options: ["Realizar a parte operacional", "Gerenciar a equipe", "Identificar riscos e implementar medidas de segurança", "Aumentar a produção"], answer: 2 },  
+    { question: "As Normas Regulamentadoras são obrigatórias?", options: ["Sim, para todas as empresas", "Não, apenas para empresas públicas", "Sim, mas somente para indústrias", "Não, são apenas recomendações"], answer: 0 },  
+    { question: "Quais fatores podem contribuir para a ocorrência de acidentes de trabalho?", options: ["Condições inadequadas de trabalho", "Falta de treinamento", "Desatenção dos funcionários", "Todos os acima"], answer: 3 },  
+    { question: "Como deve ser a manutenção de equipamentos de segurança?", options: ["Realizada regularmente", "Somente quando solicitado", "Nunca é necessária", "Apenas após um acidente"], answer: 0 },  
+    { question: "O que caracteriza um ambiente de trabalho seguro?", options: ["Baixa produção", "Adoecimento dos trabalhadores", "Existência de medidas de proteção efetivas", "Sugestões de melhoria"], answer: 2 },  
+    { question: "Quais são as consequências de não cumprir com a NR 14280?", options: ["Multas e penalidades", "Melhora na produtividade", "Aumento nos lucros", "Nada acontece"], answer: 0 },  
+    { question: "O que é um Plano de Emergência?", options: ["Um documento que define ações em caso de acidentes", "Um método de reduzir custos", "Um tipo de laudo técnico", "Um programa de treinamento"], answer: 0 },  
+    { question: "Qual é a definição de acidente de trabalho?", options: ["Qualquer incidente que cause perda financeira", "Lesão que ocorre durante o trabalho", "Qualquer ato não intencional", "Somente acidentes com EPIs"], answer: 1 },  
+    { question: "O que deve ser feito regularmente para prevenir acidentes?", options: ["Rodízio de funcionários", "Revisão das condições de segurança", "Aumento da carga horária", "Afastamento de funcionários doentes"], answer: 1 },  
+    { question: "Como a comunicação é essencial para a segurança no trabalho?", options: ["Evita conflitos", "Fomenta a competição", "Garante que todos conheçam os riscos e procedimentos", "Reduz os custos operacionais"], answer: 2 },  
+    { question: "O que significa ergonomia no contexto do trabalho?", options: ["Melhoria da aparência do ambiente", "Adaptação do trabalho às capacidades humanas", "Uso de equipamentos de alta tecnologia", "Design de espaços livres de riscos"], answer: 1 },  
+    { question: "Quais são exemplos de Equipamentos de Proteção Individual (EPIs)?", options: ["Óculos de sol, chapéus", "Luvas, capacetes, protetores auriculares", "Roupas de trabalho normais", "Sacolas plásticas"], answer: 1 },  
+    { question: "Qual é o principal objetivo da Norma Regulamentadora NR 5?", options: ["Criar a CIPA", "Promover a segurança da informação", "Regular o uso de EPIs", "Estabelecer normas de registro de acidentes"], answer: 0 },  
+    { question: "Qual é a importância do uso de medidas de proteção coletiva?", options: ["Apenas para grandes indústrias", "Protege um número maior de trabalhadores", "Reduzir custos com EPIs", "Evitar fiscalização"], answer: 1 },  
+    { question: "Que tipo de treinamento deve ser oferecido aos novos funcionários?", options: ["Treinamento técnico apenas", "Treinamento em segurança do trabalho", "Treinamento em liderança", "Treinamento financeiro"], answer: 1 },  
+    { question: "Qual a função da Inspeção de Segurança?", options: ["Aumentar o lucro", "Avaliar e identificar riscos no ambiente de trabalho", "Reduzir a carga de trabalho", "Aplicar multas"], answer: 1 },  
+    { question: "Como deve ser feita a gestão de riscos no trabalho?", options: ["Apenas quando uma multa é aplicada", "Continuamente e de forma sistemática", "Uma vez por ano", "Nunca é necessário"], answer: 1 },  
+    { question: "Qual é a responsabilidade da CIPA na empresa?", options: ["Produzir equipamentos", "Orientar sobre segurança no trabalho", "Realizar os pagamentos", "Gerenciar a produção"], answer: 1 },  
+    { question: "Qual é a função do laudo técnico na segurança do trabalho?", options: ["Aumentar custos", "Identificar e avaliar riscos", "Determinar a quantidade de trabalho", "Controlar a produção"], answer: 1 },  
+    { question: "Como as doenças ocupacionais podem ser evitadas?", options: ["Treinamentos e uso de EPIs", "Ignorados, pois não ocorrem frequentemente", "Somente em empresas grandes", "Aumentando a carga de trabalho"], answer: 0 },  
+    { question: "O que deve ser feito se um funcionário se recusar a usar EPIs?", options: ["Liberá-lo para casa", "Notificar a gerência e reavaliar a situação", "Deixar de aplicar EPIs na empresa", "Aumentar a carga de trabalho"], answer: 1 },  
+    { question: "Qual é a finalidade de um sistema de gestão de segurança?", options: ["Garantir lucros", "Proteger a saúde e segurança dos trabalhadores", "Aumentar a burocracia", "Criar mais documentos"], answer: 1 },  
+    { question: "O que são riscos ocupacionais?", options: ["Riscos que não podem ser evitados", "Fatores que podem causar acidentes ou doenças", "Fatores que aumentam a produção", "Riscos que só ocorrem em férias"], answer: 1 },  
+    { question: "Qual a função dos procedimentos operacionais padrão (POP)?", options: ["Aumentar a complexidade do trabalho", "Definir como as atividades devem ser realizadas de forma segura", "Reduzir a comunicação entre equipes", "Desestimular a conformidade"], answer: 1 },  
+    { question: "Qual é a primeira medida a ser adotada em caso de acidente de trabalho?", options: ["Chamar a ambulância", "Comunicar o supervisor", "Aguardar no local", "Informar aos colegas de trabalho"], answer: 1 },  
+    { question: "Qual é a importância do registro de acidentes e incidentes?", options: ["Identificar tendências e prevenir futuros acidentes", "Aumentar a burocracia", "Criar desconfiança entre os funcionários", "Reduzir a eficiência"], answer: 0 },  
+    { question: "Como a ergonomia pode melhorar a saúde dos trabalhadores?", options: ["Alterando a remuneração", "Adequando o ambiente de trabalho às características dos trabalhadores", "Reduzindo a carga horária", "Mudando a estrutura da empresa"], answer: 1 },  
+    { question: "Quais fatores devem ser considerados na análise de riscos?", options: ["Atividades realizadas, duração e frequência", "Apenas o tipo de atividade", "Condição financeira da empresa", "Apenas a saúde do trabalhador"], answer: 0 },  
+    { question: "O que deve ser abordado no treinamento de novos funcionários?", options: ["Somente a cultura da empresa", "Práticas de segurança e uso de EPIs", "Políticas financeiras", "Atividades recreativas"], answer: 1 },  
+    { question: "Qual a função do disco de segurança?", options: ["Alertar os trabalhadores de riscos elétricos", "Indicar áreas seguras", "Identificar áreas com produtos químicos", "Criar um ambiente relaxante"], answer: 0 },  
+    { question: "O que é um acidente de trajeto?", options: ["Acidente que ocorre durante o deslocamento para o trabalho", "Acidente que ocorre no ambiente de trabalho", "Acidente com o uso de EPIs", "Acidente que causa morte"], answer: 0 },  
+    { question: "Qual a importância da manutenção em equipamentos de segurança?", options: ["Evitar falhas e garantir a proteção", "Facilitar a venda", "Criar custos adicionais", "Dificultar o trabalho"], answer: 0 },  
+    { question: "Como o layout do ambiente de trabalho pode influenciar na segurança?", options: ["Pode aumentar a eficiência", "Pode criar riscos adicionais", "Não tem influência", "Somente para grandes obras"], answer: 1 },  
+    { question: "O que deve ser feito em caso de intoxicação por produtos químicos?", options: ["Procurar atendimento médico imediatamente", "Aguardar para ver se melhora", "Tentar continuar o trabalho", "Chamar a família"], answer: 0 },  
+    { question: "Como os acidentes podem impactar uma empresa?", options: ["Aumentar custos e reduzir a moral", "Melhorar a imagem da empresa", "Aumentar lucros", "Reduzir a carga de trabalho"], answer: 0 },  
+    { question: "Quais documentos são essenciais para a segurança do trabalho?", options: ["Relatórios financeiros", "Documentos de segurança e de saúde", "Contratos de trabalho", "Apenas orientações de clientes"], answer: 1 },  
+    { question: "O que caracteriza um agente agressor no ambiente de trabalho?", options: ["Produtos químicos, físicos ou biológicos que possam causar dano", "Qualquer objeto no ambiente", "Aumento da carga de trabalho", "Atitudes dos supervisores"], answer: 0 },  
+    { question: "Qual é o primeiro passo para criar um Programa de Controle Médico de Saúde Ocupacional (PCMSO)?", options: ["Definir os tipos de exames", "Escolher profissionais", "Criar um cronograma", "Identificar os riscos ocupacionais"], answer: 3 },  
+    { question: "Qual a importância da comunicação visual em segurança do trabalho?", options: ["Apenas estética", "Proporciona informações claras sobre riscos", "Não é necessária em ambientes industriais", "Pode ser dispensada se os empregados conhecem os riscos"], answer: 1 },  
+    { question: "O que deve ser feito se um trabalhador apresentar sinais de estresse no trabalho?", options: ["Desconsiderar, pois não impacta na segurança", "Oferecer suporte e promover um ambiente saudável", "Aumentar a carga de trabalho", "Enviar o trabalhador para casa sem atendimento"], answer: 1 },  
+    { question: "Quais os principais componentes de um laudo de segurança do trabalho?", options: ["Identificação de riscos, avaliações e recomendações", "Análise de custos da empresa", "Apenas recomendações financeiras", "Nome dos supervisores"], answer: 0 },  
+    { question: "Quais os impactos das doenças ocupacionais na produtividade?", options: ["Aumento da produtividade", "Redução do absenteísmo e aumento do foco", "Diminuição da eficiência e aumento do absenteísmo", "Nenhum impacto"], answer: 2 },  
+    { question: "Qual é a função do inventário de riscos?", options: ["Listar todas as funções da empresa", "Identificar e avaliar os riscos existentes", "Eliminar todos os riscos", "Aumentar custos"], answer: 1 },  
+    { question: "Qual a importância da higiene do trabalho?", options: ["Melhora a aparência do ambiente", "Aumenta a eficiência e a saúde", "Pode ser ignorada em empresas grandes", "Nada, é uma formalidade"], answer: 1 },  
+    { question: "O que são os sinais de segurança?", options: ["Instruções não obrigatórias", "Informações cruciais sobre segurança e riscos", "Notas de funcionários", "Sugestões de melhoria"], answer: 1 },  
+    { question: "Quais unidades de medida são usadas para expressar segurança no trabalho?", options: ["Kilogramas", "Metros", "Taxas de frequência e gravidade", "Clientes"], answer: 2 },  
+    { question: "Qual a função do Programa de Prevenção de Acidentes de Trabalho (PPAT)?", options: ["Reduzir custos", "Preventiva e educativa", "Aumentar a produção", "Ignorar os riscos presentes"], answer: 1 },  
+    { question: "Qual é a função do responsável pela segurança do trabalho?", options: ["Realizar atividades administrativas", "Aplicar e monitorar normas de segurança", "Negociar salários", "Organizar eventos"], answer: 1 },  
+    { question: "Como o feedback pode melhorar a segurança no trabalho?", options: ["Cria desconfiança", "Ajuda a identificar e resolver problemas de segurança", "Provoca mais estresse", "Não tem impacto"], answer: 1 },  
+    { question: "Quais as consequências de um acidente de trabalho para o trabalhador?", options: ["Aumento da confiança", "Saúde comprometida e possíveis afastamentos", "Promoção", "Nenhuma consequência"], answer: 1 },  
+    { question: "O que é a auditoria de segurança?", options: ["Revisão e análise das normas de segurança", "Somente um relatório financeiro", "Atualização das máquinas", "Aumento de custos"], answer: 0 },  
+    { question: "Qual é a definição de um acidente de trabalho?", options: ["Qualquer incidente que ocorra durante a jornada", "Um evento que resulta em morte", "Todo e qualquer aviso de lesão", "Apontamento de problemas de segurança"], answer: 0 },  
+    { question: "Quais são as principais causas de acidentes de trabalho?", options: ["Fatores humanos, condições inadequadas e falta de treinamento", "Somente equipamentos falhos", "Aumento de receita", "Falta de motivação"], answer: 0 },  
+    { question: "Qual é a relação entre ergonomia e conforto no ambiente de trabalho?", options: ["Ambos têm a mesma importância", "Ergonomia contribui para o conforto e redução de lesões", "Conforto pode ser ignorado", "Ambos não têm relação"], answer: 1 },  
+    { question: "Como a carga de trabalho pode afetar a segurança?", options: ["Pode aumentar a segurança", "Tornar o trabalhador menos atento e aumentar o estresse", "Não tem relação", "Não pode ser alterada"], answer: 1 },  
+    { question: "Qual a importância do acompanhamento psicológico no ambiente de trabalho?", options: ["Não é importante", "Aumenta a produtividade", "Ajuda a prevenir doenças e melhorar a saúde mental", "É apenas uma formalidade"], answer: 2 },  
+    { question: "Qual deve ser a periodicidade do treinamento em segurança para os funcionários?", options: ["Uma vez ao ano", "Anualmente, conforme necessário", "Semestralmente ou sempre que houver novos riscos", "Nunca"], answer: 2 },  
+    { question: "O que é um acidente com afastamento?", options: ["Apenas acidentes com morte", "Acidente que resulta em dias de afastamento do trabalho", "Qualquer tipo de acidente", "Somente lesões leves"], answer: 1 },  
+    { question: "Quais são os riscos a serem considerados em um planejamento de segurança?", options: ["Riscos físicos, químicos e biológicos", "Somente riscos financeiros", "Riscos de tecnologia", "Nenhum risco é relevante"], answer: 0 },  
+    { question: "O que caracteriza a proteção coletiva?", options: ["Apenas medidas individuais", "Medidas que protegem grupos de trabalhadores", "Único uso de equipamentos", "Medidas que não possuem regulamentação"], answer: 1 },  
+    { question: "Qual é uma boa prática de segurança ao trabalhar com eletricidade?", options: ["Ignorar os equipamentos de proteção", "Usar ferramentas adequadas e EPIs", "Confiar apenas na sorte", "Nunca utilizar equipamentos de proteção"], answer: 1 },  
+    { question: "Como os conflitos de trabalho podem impactar a segurança?", options: ["Não impactam", "Podem levar a acidentes e quedas na moral", "Aumentam a produção", "Reduzem a necessidade de segurança"], answer: 1 },  
+    { question: "Quais são as consequências de um ambiente de trabalho mal projetado?", options: ["Melhoria na segurança", "Aumento na ocorrência de acidentes", "Reduzir os custos operacionais", "Nada acontece"], answer: 1 },  
+    { question: "Como garantir um ambiente de trabalho livre de discriminação?", options: ["Aumentar a carga de trabalho", "Promover uma cultura de respeito e inclusão", "Ignorar as queixas", "Modificando as regras de segurança"], answer: 1 },  
+    { question: "Qual o impacto das pausas no desempenho e na segurança?", options: ["Não importa", "Aumentam a produtividade e reduzem a fadiga", "Reduzem a eficiência", "Não têm impacto"], answer: 1 },  
+    { question: "Quais são as funções de uma equipe de segurança?", options: ["Aumentar a competitividade", "Proteger os trabalhadores e prevenir acidentes", "Reduzir custos operacionais", "Controlar a produção"], answer: 1 },  
+    { question: "Quando é necessário revisar os procedimentos de segurança?", options: ["Nunca", "Apenas após um acidente", "Regularmente e sempre que novos riscos forem identificados", "Isso não é importante"], answer: 2 },  
+    { question: "Qual a definição de um programa de segurança do trabalho?", options: ["Um conjunto de normas e procedimentos para garantir segurança no trabalho", "Apenas um documento formal", "Um projeto de engenharia", "Um relatório financeiro"], answer: 0 },  
+    { question: "Quais cuidados devem ser tomados ao trabalhar em altura?", options: ["Usar cadeirinhas de descanso", "Utilizar sistemas de proteção e equipamentos adequados", "Aumentar a velocidade de trabalho", "Desconsiderar o uso de EPIs"], answer: 1 },  
+    { question: "Como a comunicação pode ajudar em situações de emergência?", options: ["Ela não é importante", "Facilita a coordenação de esforços e respostas", "Complica o processo", "Não tem impacto"], answer: 1 },  
+    { question: "O que caracteriza um ambiente de trabalho seguro?", options: ["Risco zero", "Medidas de segurança implementadas e mantidas", "Falta de treinamentos", "Equipamentos de baixa qualidade"], answer: 1 },  
+    { question: "Como melhorar a saúde mental dos trabalhadores?", options: ["Oferecer suporte psicológico e um ambiente positivo", "Aumentar a carga de trabalho", "Reduzir os benefícios", "Promover a competição"], answer: 0 },  
+    { question: "O que pode ser considerado um sinal de alerta de problemas de segurança?", options: ["Aumento na produção", "Acidentes repetitivos e queixas dos trabalhadores", "Menos reuniões de equipe", "Nada é um sinal"], answer: 1 },  
+    { question: "Quais as etapas envolvidas na análise de um acidente de trabalho?", options: ["Identificação, investigação e estratégias de prevenção", "Só a investigação", "Análise financeira", "Nenhuma"], answer: 0 },  
+    { question: "Qual é a relação entre clima organizacional e segurança?", options: ["O clima organizacional não influencia a segurança", "Clima favorável pode melhorar a segurança", "Pior clima leva a uma melhorole melhor de segurança", "Apenas segurança importa"], answer: 1 },  
+    { question: "Como as empresas podem promover a segurança de forma eficaz?", options: ["Financeiramente apenas", "Implementando uma cultura de segurança e treinamentos regulares", "Reduzindo o número de funcionários", "Aumentando os custos"], answer: 1 },  
+    { question: "Qual é o papel da liderança na segurança do trabalho?", options: ["Ignorar as preocupações dos trabalhadores", "Promover e investir em segurança", "Aumentar as pressões de trabalho", "Piorar a comunicação"], answer: 1 },  
+    { question: "Como o estresse no trabalho pode afetar a segurança?", options: ["Pode aumentar a eficiência", "Aumenta riscos e reduz a atenção", "Não tem relação", "Melhora a concentração"], answer: 1 },  
+    { question: "O que é proteção de primeira e segunda linha?", options: ["Medidas que evitam a exposição a riscos", "Apenas protocolos do governo", "Medidas de custo baixo", "Não têm relação com segurança"], answer: 0 },  
+    { question: "Quais fatores devem ser considerados na elaboração de uma política de segurança?", options: ["Riscos e legislação vigente", "Apenas a carga de trabalho", "Custos operacionais", "Apenas condições financeiras"], answer: 0 },  
+    { question: "Como o trabalho em equipe pode ajudar na segurança?", options: ["Aumentando a carga de trabalho", "Fazendo com que todos se ajudem e compartilhem informações", "Gerando conflitos", "Não tem impacto"], answer: 1 },  
+    { question: "Qual é a importância de um produto químico bem rotulado?", options: ["Não é relevante", "Evita acidentes e exposição indevida", "Aumenta a burocracia", "Não é necessário"], answer: 1 },  
+    { question: "Como garantir que todos os funcionários compreendam as normas de segurança?", options: ["Aumentando a carga de trabalho", "Treinamento regular e comunicação clara", "Ignorando as normas", "Focando apenas na produção"], answer: 1 },  
+    { question: "Qual é o objetivo da NR 1?", options: ["Disciplinar processos administrativos", "Estabelecer disposições gerais sobre saúde e segurança no trabalho", "Aumentar a produtividade", "Reduzir custos operacionais"], answer: 1 },  
+    { question: "O que a NR 4 institui?", options: ["CIPA", "SESMT", "EPIs", "Condições de temperatura"], answer: 1 },  
+    { question: "A NR 5 aborda a criação de qual comissão?", options: ["Comissão Interna de Prevenção de Acidentes", "Comissão de Ergonomia", "Comissão de Saúde Pública", "Comissão de Treinamento"], answer: 0 },  
+    { question: "Qual a principal finalidade da NR 6?", options: ["Criar o PPRA", "Definir o uso de Equipamentos de Proteção Individual", "Regulamentar o trabalho em altura", "Trabalhar com produtos perigosos"], answer: 1 },  
+    { question: "Sobre o que trata a NR 7?", options: ["Programa de Controle Médico de Saúde Ocupacional", "Treinamento de CIPA", "Transporte de produtos químicos", "Equipamentos de EPI"], answer: 0 },  
+    { question: "A NR 9 estabelece um programa chamado?", options: ["Programa de Prevenção de Acidentes", "Programa de Controle Médico", "Programa de Prevenção de Riscos Ambientais", "Programa de Treinamento"], answer: 2 },  
+    { question: "A NR 10 é específica para:", options: ["Segurança em espaços confinados", "Segurança na saúde", "Segurança em instalações elétricas", "Transporte de cargas"], answer: 2 },  
+    { question: "Qual é a função da NR 11?", options: ["Transporte de cargas", "Trabalho em altura", "Condições internas de saúde", "Segurança em equipamentos de proteção"], answer: 0 },  
+    { question: "A NR 12 se refere a:", options: ["Máquinas e equipamentos", "Ambientes de trabalho em altura", "Trabalho com substâncias químicas", "Vigilância de saúde"], answer: 0 },  
+    { question: "Qual é o foco da NR 13?", options: ["Caldeiras e vasos de pressão", "Espaços confinados", "Trabalho em campo aberto", "Segurança em saúde"], answer: 0 },  
+    { question: "A NR 15 aborda questões relacionadas a:", options: ["Condições de insalubridade", "Transporte de pessoas", "Capacitação de trabalhadores", "Avaliação de risco elétrico"], answer: 0 },  
+    { question: "A NR 17 é focada em aspectos de:", options: ["Condições de trabalho e ergonomia", "Regulamentação de produtos químicos", "Ambientes de saúde", "Segurança em eletroeletrônicos"], answer: 0 },  
+    { question: "Qual é o papel da NR 18?", options: ["Segurança em canteiros de obras", "Segurança elétrica", "Qualidade do ambiente interno", "Higiene nas indústrias agrícolas"], answer: 0 },  
+    { question: "A NR 19 trata sobre:", options: ["Equipamentos de combate a incêndios", "Posturas durante trabalho", "Vigilância sanitária", "Segurança em indústrias de alimentos"], answer: 0 },  
+    { question: "A NR 20 é voltada para:", options: ["Trabalho com inflamáveis e combustíveis", "Saúde pública", "Espaços confinados", "Máquinas e equipamentos pesados"], answer: 0 },  
+    { question: "O que a NR 22 aborda especificamente?", options: ["Segurança em mineração", "Condutas seguras em escritórios", "Treinamento ambientado", "Regulamentação de resíduos tóxicos"], answer: 0 },  
+    { question: "Qual é a relevância da NR 23?", options: ["Combate a incêndios", "Espaços confinados", "Ergonomia em saúde", "Uso de produtos químicos"], answer: 0 },  
+    { question: "A NR 24 dispõe sobre:", options: ["Condições sanitárias no ambiente", "Segurança em transporte", "Capacitação de trabalhadores", "Uso de tecnologia no trabalho"], answer: 0 },  
+    { question: "A ABNT NBR 14280 estabelece diretrizes sobre:", options: ["Equipamentos de proteção", "Gestão da segurança e saúde no trabalho", "Legislação trabalhista", "Economia de recursos"], answer: 1 },  
+    { question: "Qual a importância da avaliação de riscos segundo a ABNT NBR 14280?", options: ["Aumentar a carga de trabalho", "Identificar e mitigar riscos no ambiente de trabalho", "Reduzir custos operacionais", "Criar mais burocracia"], answer: 1 },  
+    { question: "Quais são os pilares da gestão de segurança e saúde no trabalho segundo a norma?", options: ["Formação e conscientização", "Treinamento e equipamentos", "Planejamento e execução", "Todas as alternativas acima"], answer: 3 },  
+    { question: "A ABNT NBR 14280 requer que as empresas tenham um programa de:", options: ["Prevenção de acidentes", "Controle de produtividade", "Redução de custos", "Aumento de eficiência"], answer: 0 },  
+    { question: "Qual a função do gerenciamento de SST na ABNT NBR 14280?", options: ["Criar regras financeiras", "Integrar a segurança à atividade econômica da empresa", "Evitar custos altos", "Aplicar somente penalidades"], answer: 1 },  
+    { question: "Segundo a norma, o que deve ser incluído no planejamento de SST?", options: ["Recursos humanos", "Equipamentos de proteção", "Ações preventivas e corretivas", "Remuneração salarial"], answer: 2 },  
+    { question: "A ABNT NBR 14280 enfatiza a importância da:", options: ["Comunicação eficaz sobre riscos", "Redução da comunicação", "Interferência dos sistemas externos", "Eliminação de normas anteriores"], answer: 0 },  
+    { question: "Qual é uma das exigências para a implementação da ABNT NBR 14280?", options: ["Contratação de profissionais de segurança apenas", "Treinamento contínuo dos trabalhadores", "Reduzir custos de segurança", "Ignorar feedbacks de funcionários"], answer: 1 },  
+    { question: "A norma foca na melhoria contínua dos:", options: ["Processos de produção", "Sistemas de gestão da saúde e segurança", "Recursos naturais", "Ambientes laboratoriais"], answer: 1 },  
+    { question: "Quais são as responsabilidades dos trabalhadores segundo a ABNT NBR 14280?", options: ["Zelar pela própria segurança e saúde", "Aumentar a produção", "Descumprir normas para agilizar o trabalho", "Evitar a comunicação sobre problemas"], answer: 0 },  
+    { question: "Qual a relação entre SST e a produtividade segundo a norma?", options: ["SST não interfere na produtividade", "SST pode melhorar a produtividade e a moral dos trabalhadores", "Aumentar a carga de trabalho é mais importante", "Reduzir o número de funcionários"], answer: 1 },  
+    { question: "A norma propõe a análise e investigação de:", options: ["Resultados financeiros apenas", "Acidentes e incidentes de trabalho", "Preferências dos funcionários", "Competitividade do mercado"], answer: 1 },  
+    { question: "Qual é o objetivo da NR 1?", options: ["Disciplinar processos administrativos", "Estabelecer disposições gerais sobre saúde e segurança no trabalho", "Aumentar a produtividade", "Reduzir custos operacionais"], answer: 1 },  
+    { question: "O que a NR 4 institui?", options: ["CIPA", "SESMT", "EPIs", "Condições de temperatura"], answer: 1 },  
+    { question: "A NR 5 aborda a criação de qual comissão?", options: ["Comissão Interna de Prevenção de Acidentes", "Comissão de Ergonomia", "Comissão de Saúde Pública", "Comissão de Treinamento"], answer: 0 },  
+    { question: "Qual a principal finalidade da NR 6?", options: ["Criar o PPRA", "Definir o uso de Equipamentos de Proteção Individual", "Regulamentar o trabalho em altura", "Trabalhar com produtos perigosos"], answer: 1 },  
+    { question: "Sobre o que trata a NR 7?", options: ["Programa de Controle Médico de Saúde Ocupacional", "Treinamento de CIPA", "Transporte de produtos químicos", "Equipamentos de EPI"], answer: 0 },  
+    { question: "A NR 9 estabelece um programa chamado?", options: ["Programa de Prevenção de Acidentes", "Programa de Controle Médico", "Programa de Prevenção de Riscos Ambientais", "Programa de Treinamento"], answer: 2 },  
+    { question: "A NR 10 é específica para:", options: ["Segurança em espaços confinados", "Segurança na saúde", "Segurança em instalações elétricas", "Transporte de cargas"], answer: 2 },  
+    { question: "Qual é a função da NR 11?", options: ["Transporte de cargas", "Trabalho em altura", "Condições internas de saúde", "Segurança em equipamentos de proteção"], answer: 0 },  
+    { question: "A NR 12 se refere a:", options: ["Máquinas e equipamentos", "Ambientes de trabalho em altura", "Trabalho com substâncias químicas", "Vigilância de saúde"], answer: 0 },  
+    { question: "Qual é o foco da NR 13?", options: ["Caldeiras e vasos de pressão", "Espaços confinados", "Trabalho em campo aberto", "Segurança em saúde"], answer: 0 },  
+    { question: "A NR 15 aborda questões relacionadas a:", options: ["Condições de insalubridade", "Transporte de pessoas", "Capacitação de trabalhadores", "Avaliação de risco elétrico"], answer: 0 },  
+    { question: "A NR 17 é focada em aspectos de:", options: ["Condições de trabalho e ergonomia", "Regulamentação de produtos químicos", "Ambientes de saúde", "Segurança em eletroeletrônicos"], answer: 0 },  
+    { question: "Qual é o papel da NR 18?", options: ["Segurança em canteiros de obras", "Segurança elétrica", "Qualidade do ambiente interno", "Higiene nas indústrias agrícolas"], answer: 0 },  
+    { question: "A NR 19 trata sobre:", options: ["Equipamentos de combate a incêndios", "Posturas durante trabalho", "Vigilância sanitária", "Segurança em indústrias de alimentos"], answer: 0 },  
+    { question: "A NR 20 é voltada para:", options: ["Trabalho com inflamáveis e combustíveis", "Saúde pública", "Espaços confinados", "Máquinas e equipamentos pesados"], answer: 0 },  
+    { question: "O que a NR 22 aborda especificamente?", options: ["Segurança em mineração", "Condutas seguras em escritórios", "Treinamento ambientado", "Regulamentação de resíduos tóxicos"], answer: 0 },  
+    { question: "Qual é a relevância da NR 23?", options: ["Combate a incêndios", "Espaços confinados", "Ergonomia em saúde", "Uso de produtos químicos"], answer: 0 },  
+    { question: "A NR 24 dispõe sobre:", options: ["Condições sanitárias no ambiente", "Segurança em transporte", "Capacitação de trabalhadores", "Uso de tecnologia no trabalho"], answer: 0 },  
+    { question: "Qual é a importância do acompanhamento das taxas de acidentes em uma empresa?", options: ["Melhorar a segurança do ambiente de trabalho", "Reduzir o custo de produção", "Evitar a necessidade de comunicação", "Aumentar a carga de trabalho"], answer: 0 },  
+    { question: "O que a taxa de frequência não mede?", options: ["A quantidade de acidentes ocorridos", "A gravidade das lesões", "O tempo de trabalho perdido", "O número de trabalhadores na empresa"], answer: 1 },  
+    { question: "Taxas de frequência e gravidade ajudam na construção de:", options: ["Cultura de segurança", "Custo financeiro apenas", "Redução de funcionários", "Maquinário"], answer: 0 },  
+    { question: "Quais setores geralmente apresentam taxas de acidentes mais altas?", options: ["Setores de tecnologia", "Setores da construção e industrial", "Setores administrativos", "Setores de pesquisa e desenvolvimento"], answer: 1 },  
+    { question: "A comparação entre a taxa de frequência de diferentes setores pode ajudar a:", options: ["Determinar a melhor estratégia publicitária", "Avaliar o desempenho entre empresas", "Aumentar a produtividade", "Identificar áreas de maior risco"], answer: 3 },  
+    { question: "O que pode ser feito quando uma empresa apresenta taxas elevadas de frequência de acidentes?", options: ["Implementar medidas corretivas e preventivas", "Reduzir o número de funcionários", "Aumentar as horas de trabalho sem treinamento", "Diminuir o investimento em segurança"], answer: 0 },  
+    { question: "Qual é uma consequência de não monitorar adequadamente as taxas de acidente?", options: ["Melhoria da qualidade do trabalho", "Aumento do número de acidentes", "Melhor controle de recursos", "Maior satisfação do trabalhador"], answer: 1 },  
+    { question: "As empresas podem usar as taxas de frequência e gravidade para:", options: ["Focar apenas em vendas", "Justificar demissões", "Promover uma cultura de segurança efetiva", "Reduzir horários de trabalho"], answer: 2 },  
+    { question: "Qual é uma prática recomendada para melhorar as taxas de segurança?", options: ["Realização de treinamentos regulares", "Reduzir os custos com segurança", "Ignorar acidentes menores", "Limitar a comunicação interna sobre segurança"], answer: 0 },  
+    { question: "Quais fatores podem influenciar a taxa de frequência de acidentes?", options: ["Experiência dos trabalhadores", "Ambiente de trabalho", "Cultura organizacional", "Todas as alternativas acima"], answer: 3 },  
+    { question: "A redução da taxa de gravidade de acidentes pode resultar em:", options: ["Menor produtividade", "Menores custos com seguradoras", "Mais acidentes registrados", "Redução de funcionários"], answer: 1 },  
+    { question: "Quais dados devem ser coletados para calcular a taxa de frequência e gravidade?", options: ["Total de vendas e números de funcionários", "Número total de acidentes e dias perdidos por acidentes", "Taxas de crescimento e projeções", "Feedback de clientes"], answer: 1 },  
+    { question: "Qual é a relação entre a gestão de SST e o sucesso organizacional?", options: ["Gestão de SST não tem relevância para o sucesso", "Uma boa gestão de SST pode resultar em maior produtividade e redução de custos", "O foco deve ser somente em lucros", "Não há relação significativa"], answer: 1 },  
+    { question: "O que deve ser feito após a análise das taxas de frequência e gravidade?", options: ["Implementar ações corretivas e preventivas", "Aumentar a carga de trabalho", "Desconsiderar os resultados", "Realizar auditorias financeiras"], answer: 0 },  
+    { question: "O que a comunicação clara sobre segurança pode promover na empresa?", options: ["Ambiente de trabalho hostil", "Cultura de segurança e conscientização", "Aumento das taxas de acidentes", "Menos necessidade de treinamento"], answer: 1 },  
+    { question: "Como a tecnologia pode auxiliar no monitoramento das taxas de acidente?", options: ["Gerar dados de acidentes em tempo real", "Adicionar complexidade ao processo", "Aumentar custos sem benefício", "Reduzir a transparência"], answer: 0 },  
+    { question: "Qual é uma consequência de não monitorar adequadamente as taxas de acidente?", options: ["Melhoria da qualidade do trabalho", "Aumento do número de acidentes", "Melhor controle de recursos", "Maior satisfação do trabalhador"], answer: 1 },
+{ question: "O que representa a sigla PPRA?", options: ["Programa de Prevenção de Riscos Ambientais", "Plano de Proteção de Riscos de Acidentes", "Procedimento de Prevenção e Reação a Acidentes", "Plano Preventivo de Riscos Agrícolas"], answer: 0 },
+{ question: "Quem é responsável por implementar as normas de segurança no ambiente de trabalho?", options: ["Somente o governo", "Apenas o trabalhador", "A empresa", "Os sindicatos"], answer: 2 },
+{ question: "Qual é o objetivo do PCMSO?", options: ["Avaliar produtividade", "Promover saúde ocupacional", "Gerenciar recursos", "Planejar turnos"], answer: 1 },
+{ question: "O que são riscos ergonômicos?", options: ["Riscos de produtos químicos", "Riscos de queda", "Riscos que afetam o conforto e a postura", "Riscos de incêndio"], answer: 2 },
+{ question: "O que deve conter em um mapa de risco?", options: ["Apenas riscos químicos", "Informações sobre o salário", "Tipos e graus de riscos", "Dados da produção"], answer: 2 },
+{ question: "Quando o uso de EPI é obrigatório?", options: ["Apenas em fábricas", "Somente em canteiros de obras", "Sempre que houver risco à saúde ou segurança", "Quando solicitado pelo trabalhador"], answer: 2 },
+{ question: "Quem deve fiscalizar o uso correto dos EPIs?", options: ["Somente o trabalhador", "CIPA e supervisores", "A família do trabalhador", "A prefeitura"], answer: 1 },
+{ question: "Qual é a finalidade da CIPA?", options: ["Planejar férias", "Organizar eventos da empresa", "Prevenir acidentes e doenças no trabalho", "Aumentar as vendas"], answer: 2 },
+{ question: "A análise preliminar de risco (APR) deve ser feita:", options: ["Antes da execução de uma atividade", "Durante o acidente", "Depois do expediente", "No fim do mês"], answer: 0 },
+{ question: "O que a Norma Regulamentadora NR-6 trata?", options: ["Ergonomia", "Trabalho em altura", "Equipamentos de Proteção Individual", "Sinalização de segurança"], answer: 2 },
+{ question: "O que significa insalubridade no ambiente de trabalho?", options: ["Local confortável e moderno", "Exposição a agentes nocivos à saúde", "Ambiente limpo e organizado", "Excesso de trabalho administrativo"], answer: 1 },
+{ question: "Qual é o principal objetivo das normas regulamentadoras (NRs)?", options: ["Aumentar a carga horária", "Padronizar processos", "Garantir segurança e saúde dos trabalhadores", "Reduzir impostos"], answer: 2 },
+{ question: "Qual documento estabelece os exames médicos ocupacionais?", options: ["PCMSO", "PPRA", "PPP", "LTCAT"], answer: 0 },
+{ question: "O que é o PPP (Perfil Profissiográfico Previdenciário)?", options: ["Documento fiscal", "Relatório de produção", "Histórico laboral com informações de saúde e riscos", "Folha de pagamento"], answer: 2 },
+{ question: "Em caso de acidente com afastamento, o que deve ser emitido?", options: ["Folha de ponto", "CAT - Comunicação de Acidente de Trabalho", "Nota fiscal", "Receita médica"], answer: 1 },
+{ question: "Qual NR trata da segurança e saúde em espaços confinados?", options: ["NR-33", "NR-15", "NR-12", "NR-20"], answer: 0 },
+{ question: "O que caracteriza um espaço confinado?", options: ["Ambiente ao ar livre", "Área com ventilação natural abundante", "Espaço não projetado para ocupação contínua", "Sala com ar-condicionado"], answer: 2 },
+{ question: "A sinalização de segurança tem como função:", options: ["Decorar o ambiente", "Indicar rotas e alertas de perigo", "Substituir EPIs", "Controlar ponto"], answer: 1 },
+{ question: "Qual o tempo mínimo de duração da SIPAT (Semana Interna de Prevenção de Acidentes do Trabalho)?", options: ["1 dia", "2 dias", "5 dias", "Não existe tempo definido"], answer: 2 },
+{ question: "Em qual título da Constituição Federal estão os direitos dos trabalhadores?", options: ["Título I", "Título II", "Título III", "Título IV"], answer: 1 },
+{ question: "Qual artigo da Constituição trata dos direitos sociais?", options: ["Artigo 5º", "Artigo 6º", "Artigo 7º", "Artigo 8º"], answer: 1 },
+{ question: "De acordo com o Art. 6º, qual destes é um direito social?", options: ["Lucro empresarial", "Jornada extra", "Trabalho", "Publicidade"], answer: 2 },
+{ question: "O artigo 7º da Constituição garante ao trabalhador:", options: ["Lucros ilimitados", "Redução de salário sem acordo", "Adicional de insalubridade", "Trabalho infantil"], answer: 2 },
+{ question: "A Constituição assegura aos trabalhadores urbanos e rurais:", options: ["Jornada de 12 horas diárias obrigatórias", "Proteção contra despedida arbitrária", "Falta de direitos previdenciários", "Salário abaixo do mínimo"], answer: 1 },
+{ question: "A redução dos riscos inerentes ao trabalho é garantida pela Constituição por meio de:", options: ["Premiações", "Regulamentos da empresa", "Normas de segurança e saúde", "Campanhas de marketing"], answer: 2 },
+{ question: "É direito do trabalhador a jornada de trabalho de:", options: ["10 horas diárias", "8 horas diárias e 44 semanais", "6 horas semanais", "Sem limite definido"], answer: 1 },
+{ question: "A Constituição garante salário mínimo que:", options: ["Atenda apenas alimentação", "Cubra apenas moradia", "Atenda às necessidades vitais básicas", "Apenas transporte"], answer: 2 },
+{ question: "O descanso semanal remunerado previsto na Constituição deve ocorrer:", options: ["A cada 15 dias", "Semanalmente, preferencialmente aos domingos", "Somente em feriados", "A cada 2 semanas"], answer: 1 },
+{ question: "É direito constitucional do trabalhador a licença-maternidade de:", options: ["60 dias", "90 dias", "120 dias", "150 dias"], answer: 2 },
+{ question: "A Constituição proíbe:", options: ["Adicional noturno", "Insalubridade", "Trabalho noturno", "Trabalho infantil e escravo"], answer: 3 },
+{ question: "A Constituição assegura ao trabalhador:", options: ["Participação nos lucros da empresa", "Controle total da empresa", "Redução de carga horária sem negociação", "Dispensa de tributos"], answer: 0 },
+{ question: "A Constituição determina a proteção do trabalho da mulher:", options: ["Apenas se grávida", "Somente no setor público", "Em condições de igualdade com o homem", "Somente após os 18 anos"], answer: 2 },
+{ question: "A Constituição garante ao trabalhador rural:", options: ["Menos direitos que o urbano", "Direitos iguais aos do trabalhador urbano", "Apenas direito à terra", "Trabalho a partir dos 12 anos"], answer: 1 },
+{ question: "Sobre a saúde, a Constituição estabelece que:", options: ["É dever exclusivo do trabalhador", "É direito de todos e dever do Estado", "É apenas para servidores públicos", "Depende de contrato privado"], answer: 1 },
+{ question: "A Constituição assegura aos trabalhadores aposentadoria:", options: ["Somente por idade", "Somente por invalidez", "Incluindo tempo de contribuição e invalidez", "Apenas por decisão judicial"], answer: 2 },
+{ question: "A Previdência Social é:", options: ["Apenas para empresas", "Uma empresa privada", "Um direito garantido constitucionalmente", "Sem respaldo na Constituição"], answer: 2 },
+{ question: "A Constituição garante adicional de periculosidade para atividades:", options: ["Com risco de vida", "Com carga horária elevada", "De baixa complexidade", "De menor produtividade"], answer: 0 },
+{ question: "A liberdade sindical é garantida pela Constituição?", options: ["Não", "Sim, com restrições severas", "Sim, inclusive sem interferência do Estado", "Apenas em sindicatos oficiais"], answer: 2 },
+{ question: "Conforme a Constituição, o trabalhador tem direito a férias:", options: ["De 10 dias corridos", "Remuneradas com adicional de 1/3", "Sem pagamento", "A cada 6 meses"], answer: 1 },
+{ question: "Qual é a principal forma de prevenir acidentes no trabalho?", options: ["Ignorar sinais de risco", "Utilizar EPIs corretamente", "Aumentar a carga de trabalho", "Evitar treinamentos"], answer: 1 },
+{ question: "A análise de riscos deve ser feita:", options: ["Somente após um acidente", "Antes da execução das atividades", "Apenas uma vez por ano", "Quando o trabalhador pedir"], answer: 1 },
+{ question: "A sinalização de segurança serve para:", options: ["Enfeitar o ambiente", "Informar e alertar sobre riscos", "Controlar horários", "Organizar documentos"], answer: 1 },
+{ question: "A prevenção de acidentes depende de:", options: ["Sorte", "Uso adequado de EPIs e treinamentos", "Experiência do trabalhador apenas", "Tempo de empresa"], answer: 1 },
+{ question: "Treinamentos de segurança devem ser realizados:", options: ["Somente após acidentes", "Periodicamente e sempre que necessário", "Apenas no fim do ano", "Somente por iniciativa do trabalhador"], answer: 1 },
+{ question: "A investigação de quase-acidentes é importante porque:", options: ["Não tem utilidade", "Evita que acidentes graves ocorram", "Aumenta a burocracia", "Serve apenas para registro"], answer: 1 },
+{ question: "A organização do ambiente de trabalho contribui para:", options: ["Desmotivação", "Redução de produtividade", "Prevenção de acidentes", "Aumento de riscos"], answer: 2 },
+{ question: "O uso correto de ferramentas e máquinas:", options: ["É opcional", "É desnecessário se houver EPIs", "Ajuda a prevenir acidentes", "Não influencia na segurança"], answer: 2 },
+{ question: "O que deve ser feito ao identificar um risco no ambiente de trabalho?", options: ["Ignorar e continuar", "Relatar à supervisão", "Tentar resolver por conta própria", "Chamar o RH"], answer: 1 },
+{ question: "A cultura de segurança é construída por:", options: ["Medo de punições", "Engajamento e conscientização coletiva", "Campanhas publicitárias", "Reuniões mensais"], answer: 1 },
+{ question: "A CIPA atua na:", options: ["Fiscalização de impostos", "Prevenção de acidentes e doenças", "Contratação de pessoal", "Limpeza do ambiente"], answer: 1 },
+{ question: "Manter os EPIs em bom estado é responsabilidade:", options: ["Somente da empresa", "Somente do governo", "De todos que os utilizam", "Apenas do técnico de segurança"], answer: 2 },
+{ question: "A realização de pausas e alongamentos no trabalho ajuda a prevenir:", options: ["Riscos ambientais", "Acidentes com máquinas", "Lesões por esforço repetitivo (LER)", "Acidentes elétricos"], answer: 2 },
+{ question: "Quem é responsável pela segurança no ambiente de trabalho?", options: ["Somente a empresa", "Somente o técnico de segurança", "Todos os envolvidos", "Apenas os gestores"], answer: 2 },
+{ question: "A manutenção preventiva de máquinas serve para:", options: ["Melhorar o visual", "Evitar falhas e acidentes", "Aumentar o consumo de energia", "Acelerar a produção"], answer: 1 },
+{ question: "Quais são sinais de risco que devem ser observados no ambiente de trabalho?", options: ["Avisos ignorados", "Sons altos, calor excessivo, mau cheiro", "Áreas limpas e organizadas", "Iluminação adequada"], answer: 1 },
+{ question: "As NRs (Normas Regulamentadoras) existem para:", options: ["Aumentar burocracia", "Reduzir custos", "Orientar e prevenir riscos no trabalho", "Substituir a CLT"], answer: 2 },
+{ question: "A prevenção de acidentes é um investimento porque:", options: ["Reduz despesas com indenizações e afastamentos", "Diminui a qualidade do serviço", "Aumenta o tempo de produção", "Gera menos produtividade"], answer: 0 },
+{ question: "Quais fatores colaboram para a ocorrência de acidentes?", options: ["Treinamento e organização", "Desatenção, pressa e negligência", "Uso correto de EPIs", "Planejamento das tarefas"], answer: 1 },
+{ question: "Qual medida deve ser adotada após um acidente no trabalho?", options: ["Esquecer o ocorrido", "Culpar o trabalhador", "Investigar as causas e aplicar melhorias", "Fechar o setor"], answer: 2 },
+{ question: "Qual é o principal objetivo da NR-1?", options: ["Estabelecer regras de salário", "Estabelecer diretrizes gerais sobre saúde e segurança no trabalho", "Determinar horários de expediente", "Regulamentar aposentadorias"], answer: 1 },
+{ question: "A NR-1 estabelece que o trabalhador deve:", options: ["Ignorar orientações", "Usar corretamente os EPIs fornecidos", "Ficar isento das regras", "Evitar treinamentos"], answer: 1 },
+{ question: "Segundo a NR-1, o empregador deve garantir:", options: ["Jornadas flexíveis", "Condições seguras e saudáveis no ambiente de trabalho", "Redução de impostos", "Prêmios mensais"], answer: 1 },
+{ question: "O que é o GRO (Gerenciamento de Riscos Ocupacionais)?", options: ["Relatório financeiro", "Sistema de monitoramento eletrônico", "Conjunto de ações para identificar, avaliar e controlar riscos", "Plano de marketing"], answer: 2 },
+{ question: "A NR-1 se aplica a:", options: ["Apenas à indústria", "Somente empresas públicas", "Todos os empregadores e trabalhadores regidos pela CLT", "Empresas com mais de 500 funcionários"], answer: 2 },
+{ question: "O PGR (Programa de Gerenciamento de Riscos) é exigido por qual norma?", options: ["NR-7", "NR-1", "NR-12", "NR-35"], answer: 1 },
+{ question: "Qual documento substituiu o PPRA em muitas situações a partir da nova NR-1?", options: ["LTCAT", "PGR", "PCMSO", "PPP"], answer: 1 },
+{ question: "Quem deve elaborar o PGR?", options: ["Qualquer funcionário", "A CIPA", "Profissional qualificado ou legalmente habilitado", "Somente o RH"], answer: 2 },
+{ question: "O inventário de riscos deve fazer parte de qual programa?", options: ["PPP", "PGR", "PCMSO", "SIPAT"], answer: 1 },
+{ question: "Segundo a NR-1, em que situação a empresa está dispensada do PGR?", options: ["Quando desejar", "Quando for optante pelo Simples Nacional e sem riscos", "Se tiver mais de 500 funcionários", "Somente quando a CIPA decidir"], answer: 1 },
+{ question: "Quais são os componentes obrigatórios do PGR?", options: ["Relatórios fiscais e inventário de pessoal", "Inventário de riscos e plano de ação", "Somente estatísticas anuais", "Regulamento interno da empresa"], answer: 1 },
+{ question: "A capacitação e o treinamento previstos na NR-1 devem ser realizados:", options: ["Apenas na admissão", "Na admissão, mudança de função, retorno e periodicamente", "Somente quando solicitado", "A cada cinco anos"], answer: 1 },
+{ question: "A carga horária mínima para treinamento inicial de segurança, conforme NR-1, é de:", options: ["2 horas", "4 horas", "6 horas", "8 horas"], answer: 3 },
+{ question: "A NR-1 exige que treinamentos sejam registrados por:", options: ["Vídeos e fotos", "Folha de ponto", "Certificados com nome, conteúdo, carga horária, data e assinatura", "Recibos de salário"], answer: 2 },
+{ question: "O que é o plano de ação dentro do PGR?", options: ["Planejamento de marketing", "Lista de tarefas da equipe", "Medidas para controlar riscos ocupacionais", "Escala de turnos"], answer: 2 },
+{ question: "A NR-1 classifica riscos com base em que critérios?", options: ["Cor do uniforme", "Idade dos funcionários", "Grau de severidade e probabilidade", "Horário de trabalho"], answer: 2 },
+{ question: "É permitido realizar treinamento na modalidade EAD (Ensino a Distância) segundo a NR-1?", options: ["Não", "Sim, em qualquer situação", "Sim, desde que atendidos critérios específicos da norma", "Apenas com autorização judicial"], answer: 2 },
+{ question: "Os treinamentos previstos na NR-1 devem ser ministrados por:", options: ["Qualquer funcionário", "Profissional qualificado ou legalmente habilitado", "O gerente do setor", "A CIPA"], answer: 1 },
+{ question: "Conforme a NR-1, os trabalhadores devem colaborar com a segurança:", options: ["Somente quando houver fiscalização", "O tempo todo, cumprindo orientações e normas", "Somente quando receberem adicional", "Apenas se concordarem"], answer: 1 },
+{ question: "A NR-1 foi atualizada para reforçar principalmente:", options: ["A terceirização", "A desregulamentação trabalhista", "O gerenciamento de riscos e a cultura de prevenção", "A redução de direitos"], answer: 2 },
+{ question: "Qual era o principal objetivo da NR-2 antes de ser revogada?", options: ["Regular férias", "Obrigar a inspeção prévia para funcionamento de empresas", "Controlar salários", "Organizar o RH"], answer: 1 },
+{ question: "A inspeção prévia tratada na NR-2 era exigida para:", options: ["Empresas públicas apenas", "Empresas novas antes do início das atividades", "Empresas com mais de 100 funcionários", "Microempresas apenas"], answer: 1 },
+{ question: "Quem era responsável por realizar a inspeção prévia segundo a NR-2?", options: ["O Corpo de Bombeiros", "A CIPA", "Auditores Fiscais do Trabalho", "A Polícia Federal"], answer: 2 },
+{ question: "O que acontecia se a empresa não passasse na inspeção prévia?", options: ["Poderia funcionar normalmente", "Recebia uma multa simbólica", "Não poderia iniciar suas atividades legalmente", "Tinha que mudar de endereço"], answer: 2 },
+{ question: "A NR-2 foi oficialmente revogada em que ano?", options: ["2010", "2015", "2019", "2023"], answer: 2 },
+{ question: "Com a revogação da NR-2, as empresas:", options: ["São isentas de qualquer fiscalização", "Não precisam seguir normas de SST", "Podem iniciar atividades sem inspeção prévia, mas devem cumprir as NRs", "Precisam pedir permissão da CIPA"], answer: 2 },
+{ question: "Após a revogação da NR-2, a fiscalização das condições de trabalho:", options: ["Foi extinta", "Continua sendo feita por auditores fiscais", "Passou a ser feita pela polícia", "Ficou a cargo do Ministério da Economia"], answer: 1 },
+{ question: "O principal motivo da revogação da NR-2 foi:", options: ["Redução de burocracia e modernização das normas", "Excesso de acidentes", "Falta de auditores", "Mudança de governo"], answer: 0 },
+{ question: "Mesmo sem inspeção prévia, a empresa ainda deve:", options: ["Ignorar as normas", "Esperar fiscalização para se adequar", "Cumprir todas as normas regulamentadoras de SST", "Contratar bombeiro civil"], answer: 2 },
+{ question: "Qual norma passou a concentrar o foco no Gerenciamento de Riscos após a revogação da NR-2?", options: ["NR-4", "NR-1", "NR-10", "NR-6"], answer: 1 },
+{ question: "A inspeção prévia prevista na NR-2 era considerada uma forma de:", options: ["Controle de ponto", "Controle financeiro", "Prevenção de riscos antes da operação", "Inscrição na junta comercial"], answer: 2 },
+{ question: "A ausência da NR-2 exige que as empresas:", options: ["Aguardem autorização", "Redobrem a atenção com os riscos ocupacionais desde o início", "Contratem engenheiros civis", "Trabalhem sem normas"], answer: 1 },
+{ question: "Mesmo sem inspeção prévia, a empresa ainda pode ser interditada se:", options: ["Estiver com a pintura irregular", "Oferecer riscos graves e iminentes à segurança", "Não pagar vale-transporte", "Faltar uniforme"], answer: 1 },
+{ question: "O que significa 'risco grave e iminente'?", options: ["Qualquer risco pequeno", "Risco que não pode ser comprovado", "Risco que pode causar acidente ou morte imediatamente", "Problema administrativo"], answer: 2 },
+{ question: "Qual documento substitui, em parte, o papel preventivo da inspeção prévia da NR-2?", options: ["PPP", "PPRA", "PGR", "CIPA"], answer: 2 },
+{ question: "Com o fim da NR-2, qual o papel dos auditores fiscais do trabalho?", options: ["Multar empresas automaticamente", "Ajudar os sindicatos", "Verificar, orientar e fiscalizar o cumprimento das NRs", "Emitir carteira de trabalho"], answer: 2 },
+{ question: "Após a revogação da NR-2, qual é a base para avaliar os riscos de uma empresa?", options: ["Laudo da prefeitura", "PGR e inventário de riscos ocupacionais", "Lista de EPIs", "Relatório de RH"], answer: 1 },
+{ question: "Qual dessas afirmações está correta sobre a NR-2?", options: ["Ela ainda está em vigor", "Foi substituída pela NR-5", "Foi revogada em 2019", "Nunca existiu formalmente"], answer: 2 },
+{ question: "Qual entidade publicou a portaria que revogou a NR-2?", options: ["INSS", "Ministério da Saúde", "Ministério da Economia", "Ministério do Trabalho"], answer: 2 },
+{ question: "A empresa pode iniciar suas atividades hoje sem inspeção prévia, desde que:", options: ["Tenha mais de 50 funcionários", "Tenha laudo da prefeitura", "Cumpra as normas regulamentadoras de SST", "Esteja cadastrada no MEI"], answer: 2 },
+{ question: "O que trata a NR-3?", options: ["Uso de EPIs", "Treinamentos obrigatórios", "Embargo e interdição por risco grave e iminente", "Controle de ponto eletrônico"], answer: 2 },
+{ question: "O que caracteriza um risco grave e iminente?", options: ["Risco leve", "Qualquer acidente comum", "Situação que pode causar acidente ou doença com lesão grave ou morte", "Problema administrativo"], answer: 2 },
+{ question: "Quem pode determinar um embargo ou interdição conforme a NR-3?", options: ["CIPA", "Gerente da empresa", "Auditor-Fiscal do Trabalho", "Trabalhador acidentado"], answer: 2 },
+{ question: "O embargo segundo a NR-3 se aplica a:", options: ["Máquinas defeituosas", "Condições sanitárias", "Atividades de construção ou obra", "Turnos de trabalho"], answer: 2 },
+{ question: "A interdição segundo a NR-3 se aplica a:", options: ["Atividades de RH", "Locais, máquinas ou equipamentos com risco grave", "Jornada de trabalho", "Pagamentos"], answer: 1 },
+{ question: "Qual a consequência imediata de uma interdição determinada pela NR-3?", options: ["Aviso de advertência", "Paralisação da atividade ou equipamento", "Multa simbólica", "Entrega de EPIs"], answer: 1 },
+{ question: "O embargo ou interdição pode ser removido quando:", options: ["O gerente solicitar", "A empresa emitir um relatório", "For eliminada a situação de risco grave", "Após 30 dias"], answer: 2 },
+{ question: "A NR-3 tem como objetivo:", options: ["Organizar férias coletivas", "Proteger apenas o empregador", "Prevenir acidentes graves e proteger vidas", "Aumentar a produção"], answer: 2 },
+{ question: "O descumprimento de uma interdição pode levar a:", options: ["Suspensão da NR-3", "Prêmios de produtividade", "Sanções administrativas e criminais", "Promoção do gestor"], answer: 2 },
+{ question: "Durante um embargo, o empregador deve:", options: ["Substituir os funcionários", "Continuar normalmente", "Suspender a atividade embargada", "Contratar novo técnico"], answer: 2 },
+{ question: "A comunicação de embargo ou interdição deve ser feita:", options: ["Oralmente apenas", "Por meio eletrônico apenas", "Por escrito com registro oficial", "Via aplicativo de mensagens"], answer: 2 },
+{ question: "A interdição pode ser aplicada a equipamentos quando:", options: ["Estão com nota fiscal vencida", "Representam risco grave e iminente à saúde ou integridade física", "Estão com cor errada", "São muito antigos"], answer: 1 },
+{ question: "A NR-3 é uma norma de caráter:", options: ["Informativo", "Educacional", "Prevencionista e de emergência", "Administrativo apenas"], answer: 2 },
+{ question: "A interdição de um setor impede que:", options: ["Os EPIs sejam usados", "Funcionários recebam salário", "A atividade continue até eliminar o risco", "A empresa venda produtos"], answer: 2 },
+{ question: "A empresa pode recorrer de um embargo ou interdição?", options: ["Sim, mas sem continuar as atividades interditadas", "Não, nunca", "Somente após multa", "Sim, e continuar operando"], answer: 0 },
+{ question: "Qual o foco da NR-3 dentro das normas de SST?", options: ["Organização financeira", "Intervenção imediata em riscos graves", "Pagamento de adicionais", "Controle de faltas"], answer: 1 },
+{ question: "Risco grave e iminente pode resultar em:", options: ["Multa leve", "Promoção de equipe", "Acidentes fatais ou lesões graves", "Revisão de metas"], answer: 2 },
+{ question: "Após sanado o risco, quem pode liberar a retomada da atividade interditada?", options: ["Funcionário envolvido", "Supervisor da obra", "Auditor-Fiscal do Trabalho responsável", "Gerente de produção"], answer: 2 },
+{ question: "A NR-3 atua em conjunto com qual outro documento?", options: ["Livro caixa", "PGR (Programa de Gerenciamento de Riscos)", "Holerite", "Ficha de registro"], answer: 1 },
+{ question: "Uma obra embargada pode continuar atividades em outro setor?", options: ["Não, deve parar tudo", "Sim, desde que o setor esteja fora da área de risco", "Somente com permissão judicial", "Apenas em feriados"], answer: 1 },
+{ question: "Qual é o objetivo principal da NBR 14280?", options: ["Estabelecer punições para acidentes", "Definir normas de segurança elétrica", "Fixar critérios para registro e análise de acidentes do trabalho", "Determinar salários conforme o risco"], answer: 2 },
+{ question: "O que a NBR 14280 considera como acidente do trabalho?", options: ["Falta de equipamento", "Ocorrência inesperada relacionada ao trabalho que pode causar lesão", "Doença psicológica sem nexo causal", "Falta de treinamento"], answer: 1 },
+{ question: "Qual o principal objetivo da NBR 14280:2001?", options: ["Padronizar equipamentos de proteção", "Definir penalidades por acidentes", "Estabelecer critérios para registro e análise de acidentes", "Exigir auditorias mensais nas empresas"], answer: 2 },
+{ question: "O que distingue acidente de lesão segundo a NBR 14280?", options: ["Acidente é o resultado e lesão é a causa", "Lesão sempre envolve afastamento", "Acidente é o evento, lesão é a consequência", "Lesão é o evento, acidente é a consequência"], answer: 2 },
+{ question: "O que caracteriza um acidente de trajeto segundo a NBR 14280?", options: ["Qualquer acidente fora do trabalho", "Acidente que ocorre entre a casa e o trabalho", "Acidente com veículo da empresa", "Acidente com afastamento superior a 15 dias"], answer: 1 },
+{ question: "Segundo a NBR 14280, o que é considerado uma causa do acidente?", options: ["Resultado da lesão", "Número de dias de afastamento", "Fator pessoal de insegurança ou condição ambiente", "Hora em que ocorreu"], answer: 2 },
+{ question: "O que é um acidente sem lesão?", options: ["Acidente que não exige socorro médico", "Acidente que não causa dano ao meio ambiente", "Acidente que não causa lesão pessoal", "Acidente leve"], answer: 2 },
+{ question: "Qual conceito a NBR 14280 fixa para facilitar a análise de acidentes?", options: ["Tipos de EPI obrigatórios", "Definição de condições de trabalho ideais", "Linguagem uniforme entre os analistas", "Punições legais aos responsáveis"], answer: 2 },
+{ question: "A diferença entre acidente pessoal e impessoal está na:", options: ["Presença de agente químico", "Causa do acidente", "Existência de acidentado", "Gravidade da lesão"], answer: 2 },
+{ question: "O que é o agente do acidente segundo a norma?", options: ["Pessoa que causou o acidente", "Local onde ocorreu o acidente", "Coisa ou substância que provocou o acidente", "Horário em que o acidente ocorreu"], answer: 2 },
+{ question: "Conforme a norma, o que é considerado fator pessoal de insegurança?", options: ["Um equipamento com defeito", "Falta de iluminação no ambiente", "Comportamento humano inseguro", "Erro no projeto da planta"], answer: 2 },
+{ question: "O que significa 'lesão com afastamento'?", options: ["Qualquer lesão com necessidade de curativo", "Lesão que não afeta a capacidade de trabalho", "Lesão que impede o retorno ao trabalho no dia seguinte", "Lesão com sequelas visíveis"], answer: 2 },
+{ question: "Qual a diferença entre acidente e lesão segundo a norma?", options: ["Nenhuma diferença", "Acidente é sempre com lesão", "Lesão é consequência do acidente", "Lesão é o agente causador"], answer: 2 },
+{ question: "O que é considerado um acidente impessoal pela NBR 14280?", options: ["Aquele que não envolve trabalhador", "Aquele sem lesão pessoal direta", "Acidente durante o trajeto", "Ato inseguro do trabalhador"], answer: 1 },
+{ question: "Qual é o conceito de acidentado na NBR 14280?", options: ["Funcionário afastado por doença comum", "Pessoa com qualquer tipo de dor", "Vítima de acidente do trabalho", "Testemunha do acidente"], answer: 2 },
+{ question: "O que caracteriza um acidente de trajeto?", options: ["Apenas acidentes no ambiente de trabalho", "Acidentes que ocorrem em viagens internacionais", "Acidentes no percurso entre casa e trabalho sem desvios pessoais", "Acidentes fora do horário de expediente"], answer: 2 },
+{ question: "O que é um fator pessoal de insegurança?", options: ["Agente químico presente no local", "Fator relativo ao comportamento humano que pode levar a acidente", "Equipamento defeituoso", "Sistema de ventilação inadequado"], answer: 1 },
+{ question: "Segundo a norma, o que são dias perdidos?", options: ["Dias de férias", "Dias não computados por folga", "Dias corridos de afastamento por lesão pessoal", "Finais de semana"], answer: 2 },
+{ question: "O que é a taxa de frequência segundo a NBR 14280?", options: ["Índice de produtividade", "Número de acidentes por milhão de horas-homem de exposição ao risco", "Percentual de trabalhadores que usam EPI", "Horas perdidas por falhas administrativas"], answer: 1 },
+{ question: "Qual é o principal objetivo da NBR 14280:2001?", options: ["Aumentar salários", "Reduzir impostos", "Fixar critérios para análise de acidentes", "Melhorar o RH"], answer: 2 },
+{ question: "Segundo a NBR 14280, o que é um acidente do trabalho?", options: ["Qualquer ocorrência médica", "Ocorrência imprevista relacionada ao trabalho", "Falta de comparecimento", "Problema familiar"], answer: 1 },
+{ question: "O que é considerado um acidente de trajeto?", options: ["Acidente na rua durante o fim de semana", "Acidente durante as férias", "Acidente no percurso entre casa e trabalho", "Acidente após o expediente"], answer: 2 },
+{ question: "Qual termo define a ocorrência que resulta ou pode resultar em lesão pessoal?", options: ["Condição insegura", "Fator humano", "Acidente pessoal", "Agente do acidente"], answer: 2 },
+{ question: "O que diferencia acidente impessoal de acidente pessoal?", options: ["Tempo de duração", "Presença ou não de vítima", "Local do acidente", "Tipo de empresa"], answer: 1 },
+{ question: "Qual é o agente do acidente segundo a NBR 14280?", options: ["Pessoa que se acidentou", "Ambulância", "Ambiente ou coisa que causou o acidente", "Empresa"], answer: 2 },
+{ question: "O que é lesão mediata?", options: ["Lesão que ocorre fora do trabalho", "Lesão com morte", "Lesão que aparece depois do acidente", "Lesão leve"], answer: 2 },
+{ question: "A expressão 'tempo computado' refere-se a:", options: ["Horas extras pagas", "Dias úteis trabalhados", "Dias perdidos e debitados por acidentes", "Horas de folga"], answer: 2 },
+{ question: "Segundo a NBR 14280, o que caracteriza um ato inseguro?", options: ["Falta de conhecimento", "Ação ou omissão que pode causar acidente", "Desmotivação", "Insatisfação com o trabalho"], answer: 1 },
+{ question: "Qual a finalidade das estatísticas de acidentes segundo a NBR 14280?", options: ["Demitir funcionários", "Identificar culpados", "Analisar causas e consequências dos acidentes", "Aumentar produtividade"], answer: 2 },
+{ question: "Qual o propósito do cadastro de acidentes?", options: ["Controlar pagamentos do INSS", "Criar banco de dados para demissão por justa causa", "Coletar informações para prevenção de novos acidentes", "Distribuir bônus por produtividade"], answer: 2 },
+{ question: "O que deve ser considerado na comunicação interna, segundo a ABNT NBR 14280?", options: ["Informações sobre treinamentos apenas", "Feedbacks e sugestões dos trabalhadores", "Somente normas externas", "Nada, a comunicação não é importante"], answer: 1 },  
+]
+
+
+        let currentQuestion = 0;  
+        const quizContainer = document.getElementById("quizContainer");  
+
+        function loadQuestion() {  
+            const q = questions[currentQuestion];  
+            quizContainer.innerHTML = `  
+                <div class="question">${q.question}</div>  
+                ${q.options.map((opt, i) => `<div class="option" onclick="selectOption(this, ${i})">${opt}</div>`).join('')}  
+            `;  
+        }  
+
+        function selectOption(el, selected) {  
+            const options = document.querySelectorAll('.option');  
+            options.forEach(opt => opt.onclick = null); // desativa cliques após escolha
+
+            if (selected === questions[currentQuestion].answer) {  
+                el.classList.add("correct");  
+            } else {  
+                el.classList.add("wrong");  
+                options[questions[currentQuestion].answer].classList.add("correct");  
+            }  
+        }  
+
+        function nextQuestion() {  
+            if (currentQuestion < questions.length - 1) {  
+                currentQuestion++;  
+                loadQuestion();  
+            } else {  
+                quizContainer.innerHTML = "<div class='question'>Quiz finalizado! Parabéns!</div>";  
+                document.querySelector("button").style.display = "none";  
+            }  
+        }  
+
+        // Carrega a primeira pergunta  
+        loadQuestion();  
+    </script>  
+</body>  
+</html>
